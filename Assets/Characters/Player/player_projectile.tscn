@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://bvau041f5f3iv"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerProjectile.gd" id="1_65nac"]
+[ext_resource type="Texture2D" uid="uid://c41ua1ck266pl" path="res://Assets/TestAssets/testPink.png" id="2_gm3uh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ut7sf"]
+size = Vector2(10, 10)
+
+[node name="PlayerProjectile" type="Area2D"]
+script = ExtResource("1_65nac")
+
+[node name="ProjectileHitbox" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ut7sf")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-1.78814e-07, -1.49012e-07)
+scale = Vector2(0.3125, 0.3125)
+texture = ExtResource("2_gm3uh")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

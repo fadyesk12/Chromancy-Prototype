@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://bqw1d0ypu55wd"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_pg7rg"]
+[ext_resource type="Texture2D" uid="uid://1q30sdxpwnpa" path="res://Assets/TestAssets/testGreen.png" id="2_64v6x"]
+[ext_resource type="Script" path="res://Assets/Characters/Player/StateMachine.gd" id="3_a1pl1"]
+[ext_resource type="Script" path="res://Scripts/Player/States/PlayerMove.gd" id="4_ye8pn"]
+[ext_resource type="Script" path="res://Scripts/Player/States/PlayerIdle.gd" id="5_wl27p"]
+[ext_resource type="Script" path="res://Scripts/Player/States/PlayerJump.gd" id="6_ekv1u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4100t"]
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_pg7rg")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_4100t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(4.76837e-07, 2.38419e-07)
+scale = Vector2(0.625, 0.625)
+texture = ExtResource("2_64v6x")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_a1pl1")
+initialState = NodePath("PlayerIdle")
+
+[node name="PlayerMove" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("4_ye8pn")
+player = NodePath("../..")
+
+[node name="PlayerIdle" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("5_wl27p")
+player = NodePath("../..")
+
+[node name="PlayerJump" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
+script = ExtResource("6_ekv1u")
+player = NodePath("../..")

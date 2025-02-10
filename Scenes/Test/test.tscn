@@ -1,0 +1,104 @@
+[gd_scene load_steps=17 format=3 uid="uid://dcyxfdf6u2myn"]
+
+[ext_resource type="Shader" path="res://Shaders/ColorFilter.gdshader" id="1_d7xn4"]
+[ext_resource type="Script" path="res://Scripts/Camera/Camera2D.gd" id="1_fp7j1"]
+[ext_resource type="Texture2D" uid="uid://d3h36rojkbl05" path="res://Assets/TestAssets/testBlue.png" id="2_y0533"]
+[ext_resource type="Texture2D" uid="uid://45nmmqvbt2y4" path="res://Assets/TestAssets/testRed.png" id="3_psfvb"]
+[ext_resource type="Texture2D" uid="uid://1q30sdxpwnpa" path="res://Assets/TestAssets/testGreen.png" id="4_hmlh8"]
+[ext_resource type="Texture2D" uid="uid://c78b0gtghr04l" path="res://Assets/TestAssets/testYellow.png" id="5_cdqku"]
+[ext_resource type="Texture2D" uid="uid://ciai8wmemu5iw" path="res://Assets/TestAssets/testTeal.png" id="6_qxsh4"]
+[ext_resource type="Texture2D" uid="uid://gaqg1y00cwpa" path="res://Assets/TestAssets/testPurple.png" id="7_t62je"]
+[ext_resource type="Texture2D" uid="uid://c41ua1ck266pl" path="res://Assets/TestAssets/testPink.png" id="8_4ejpc"]
+[ext_resource type="Texture2D" uid="uid://ppsw1ixcm2ri" path="res://Assets/TestAssets/testOrange.png" id="9_1nqq3"]
+[ext_resource type="PackedScene" uid="uid://crwxw7h8j7t1s" path="res://Scenes/Test/fpsTest.tscn" id="10_bj82l"]
+[ext_resource type="Texture2D" uid="uid://c1i10vx7aokip" path="res://icon.svg" id="10_kajhx"]
+[ext_resource type="PackedScene" uid="uid://bqw1d0ypu55wd" path="res://Assets/Characters/Player/player.tscn" id="11_llpx0"]
+[ext_resource type="PackedScene" uid="uid://dg3gndq476n42" path="res://Assets/TestAssets/TestCollectables/RedCollectable.tscn" id="12_avt0j"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ft0b7"]
+shader = ExtResource("1_d7xn4")
+shader_parameter/showRed = false
+shader_parameter/showBlue = true
+shader_parameter/showGreen = true
+shader_parameter/showOrange = true
+shader_parameter/showPink = true
+shader_parameter/showPurple = false
+shader_parameter/showTeal = false
+shader_parameter/showYellow = false
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_q7min"]
+size = Vector2(1125, 151)
+
+[node name="TestScene" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("1_fp7j1")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="Camera2D"]
+
+[node name="ColorRect" type="ColorRect" parent="Camera2D/CanvasLayer"]
+material = SubResource("ShaderMaterial_ft0b7")
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="TestBlue" type="Sprite2D" parent="."]
+position = Vector2(258, -231)
+scale = Vector2(2.20313, 1.73437)
+texture = ExtResource("2_y0533")
+
+[node name="TestRed" type="Sprite2D" parent="."]
+position = Vector2(-335, -231)
+scale = Vector2(1.85156, 1.60937)
+texture = ExtResource("3_psfvb")
+
+[node name="TestGreen" type="Sprite2D" parent="."]
+position = Vector2(25, -233)
+scale = Vector2(2.51563, 2.17188)
+texture = ExtResource("4_hmlh8")
+
+[node name="TestYellow" type="Sprite2D" parent="."]
+position = Vector2(-84, -228)
+scale = Vector2(2.59375, 1.96875)
+texture = ExtResource("5_cdqku")
+
+[node name="TestTeal" type="Sprite2D" parent="."]
+position = Vector2(157, -224)
+scale = Vector2(2.52344, 2.20312)
+texture = ExtResource("6_qxsh4")
+
+[node name="TestPurple" type="Sprite2D" parent="."]
+position = Vector2(369, -226)
+scale = Vector2(2.26562, 2.03907)
+texture = ExtResource("7_t62je")
+
+[node name="TestPink" type="Sprite2D" parent="."]
+position = Vector2(487, -239)
+scale = Vector2(2.32031, 2.13281)
+texture = ExtResource("8_4ejpc")
+
+[node name="TestOrange" type="Sprite2D" parent="."]
+position = Vector2(-224, -231)
+scale = Vector2(2.70313, 1.53125)
+texture = ExtResource("9_1nqq3")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2(0, 167)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(-2.5, 65.5)
+shape = SubResource("RectangleShape2D_q7min")
+
+[node name="Sprite2D" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(-2.5, 64.5)
+scale = Vector2(8.71094, 1.14844)
+texture = ExtResource("10_kajhx")
+
+[node name="Player" parent="." instance=ExtResource("11_llpx0")]
+position = Vector2(-156, 85)
+
+[node name="Control" parent="." instance=ExtResource("10_bj82l")]
+
+[node name="RedCollectible" parent="." instance=ExtResource("12_avt0j")]
+position = Vector2(68, 126)
+
+[connection signal="child_exiting_tree" from="." to="Camera2D" method="_on_test_scene_child_exiting_tree"]
