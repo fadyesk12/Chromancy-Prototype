@@ -36,4 +36,5 @@ func performMove():
 		projectile.global_position = player.global_position
 		projectile.initial_position = player.global_position
 		projectile.direction = player.faceDirection
+		player.performQCF()
 		print("H A D O U K E N !")

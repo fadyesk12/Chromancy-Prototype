@@ -13,11 +13,24 @@ func physicsUpdate(_delta : float):
 			player.move(direction)
 		else:
 			player.stop()
+		print(player.velocity.y)
 		if player.velocity.y == 0:
 			player.velocity.x = 0
 			#player.inputBuffer.clear()
 			Transitioned.emit(self, "PlayerIdle")
+			
+	if !checkSpecialMove():
+		if !checkBasicMove():
+			checkMoveCommand()
 func checkSpecialMove():
+	var buffer = player.getInputBuffer()
+	if buffer:
+		for move in player.specialMoveList:
+			if move.checkInput(buffer):
+				Transitioned.emit(self,"PlayerRecovery")
+				move.performMove()
+				player.inputBuffer.clear()
+				player.inputBuffer.push_back(CommandEnum.NEUTRAL)
 	return false
 func checkBasicMove():
 	return false

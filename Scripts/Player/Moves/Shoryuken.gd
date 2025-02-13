@@ -2,6 +2,9 @@ extends Move
 
 class_name Shoryuken
 @export var player : CharacterBody2D
+@export var shoryukenHeight = 75
+@export var shoryukenDistance = 15
+@export var speed = 20
 var currentScene = null
 # Called when the node enters the scene tree for the first time.
 
@@ -30,5 +33,15 @@ func checkInput(buffer):
 func performMove():
 	if not currentScene:
 		currentScene = player.get_tree().get_current_scene()
-	player.global_position = Vector2(0,0)
+	var direction = player.faceDirection
+	var destinationX = player.global_position.x + (shoryukenDistance * direction)
+	var destinationY = player.global_position.y - shoryukenHeight
+	var destination = Vector2(destinationX,destinationY)
+	print(player.global_position.x)
+	print(destinationX)
+	print(player.global_position.y)
+	print(destinationY)
+	player.performDP(destination)
+	#player.global_position = player.global_position.move_toward(destination, speed)
+	#player.global_position = destination
 	print("S H O R Y U K E N !")

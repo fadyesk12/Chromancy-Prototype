@@ -22,7 +22,14 @@ func physicsUpdate(_delta : float):
 		if !checkBasicMove():
 			checkMoveCommand()
 func checkSpecialMove():
-	return false
+	var buffer = player.getInputBuffer()
+	if buffer:
+		for move in player.specialMoveList:
+			if move.checkInput(buffer):
+				Transitioned.emit(self,"PlayerRecovery")
+				move.performMove()
+				player.inputBuffer.clear()
+				player.inputBuffer.push_back(CommandEnum.NEUTRAL)
 func checkBasicMove():
 	return false
 func checkMoveCommand():

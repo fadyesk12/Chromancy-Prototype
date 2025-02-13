@@ -12,42 +12,57 @@ var faceDirection = defaultDirection
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 
 func jump():
-	jumpCount -= 1
-	velocity.y = jumpVelocity
+	if not ($StateMachine.currentState is PlayerRecovery):
+		jumpCount -= 1
+		velocity.y = jumpVelocity
 
 func crouch():
-	transform = Transform2D(
-		transform.get_rotation(),
-		Vector2(transform.get_scale().x,
-		(transform.get_scale().y)/2), 
-		transform.get_skew(),
-		Vector2(transform.get_origin().x,(transform.get_origin().y)+transform.get_scale().y/2))
+	if not ($StateMachine.currentState is PlayerRecovery):
+		transform = Transform2D(
+			transform.get_rotation(),
+			Vector2(transform.get_scale().x,
+			(transform.get_scale().y)/2), 
+			transform.get_skew(),
+			Vector2(transform.get_origin().x,(transform.get_origin().y)+transform.get_scale().y/2))
 func stand():
-	transform = Transform2D(
-		transform.get_rotation(),
-		Vector2(transform.get_scale().x,
-		(transform.get_scale().y)*2), 
-		transform.get_skew(),
-		Vector2(transform.get_origin().x,(transform.get_origin().y)-transform.get_scale().y/2))
+	if not ($StateMachine.currentState is PlayerRecovery):
+		transform = Transform2D(
+			transform.get_rotation(),
+			Vector2(transform.get_scale().x,
+			(transform.get_scale().y)*2), 
+			transform.get_skew(),
+			Vector2(transform.get_origin().x,(transform.get_origin().y)-transform.get_scale().y/2))
 func move(direction):
 	if not ($StateMachine.currentState is PlayerBlock):
 		if direction > 0:
 			faceDirection = 1.0
 		else:
 			faceDirection = -1.0
-	velocity.x = direction * Speed
+	if not ($StateMachine.currentState is PlayerRecovery):
+		velocity.x = direction * Speed
 	
 func stop():
 	velocity.x = move_toward(velocity.x, 0, Speed)
 
+func performQCF():
+	if $StateMachine.currentState is PlayerRecovery:
+		$StateMachine.currentState.endRecovery("PlayerIdle")
 
+func performDP(destination):
+	var previousVelocity = velocity
+	var tween = create_tween()
+	tween.tween_property(self, "position", destination, 0.25)
+	velocity = previousVelocity
+	if $StateMachine.currentState is PlayerRecovery:
+		$StateMachine.currentState.endRecovery("PlayerFall")
 
 func _physics_process(delta):
 	move_and_slide()
 	# Add the gravity.
-	if not is_on_floor():
+	if not (is_on_floor() and ($StateMachine.currentState is PlayerRecovery)):
 		velocity.y += gravity * delta
 	if is_on_floor():
+		velocity.y = 0
 		jumpCount = defaultJumpCount
 	
 	#print(interpretMovementVector(delta))

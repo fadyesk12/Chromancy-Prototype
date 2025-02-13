@@ -27,6 +27,7 @@ func checkSpecialMove():
 	if buffer:
 		for move in player.specialMoveList:
 			if move.checkInput(buffer):
+				Transitioned.emit(self,"PlayerRecovery")
 				move.performMove()
 				player.inputBuffer.clear()
 				player.inputBuffer.push_back(CommandEnum.NEUTRAL)

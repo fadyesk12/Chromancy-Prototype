@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bqw1d0ypu55wd"]
+[gd_scene load_steps=12 format=3 uid="uid://bqw1d0ypu55wd"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1_pg7rg"]
 [ext_resource type="Texture2D" uid="uid://1q30sdxpwnpa" path="res://Assets/TestAssets/testGreen.png" id="2_64v6x"]
@@ -9,10 +9,12 @@
 [ext_resource type="Script" path="res://Scripts/Player/States/PlayerFall.gd" id="7_drhye"]
 [ext_resource type="Script" path="res://Scripts/Player/States/PlayerCrouch.gd" id="8_1mgkd"]
 [ext_resource type="Script" path="res://Scripts/Player/States/PlayerBlock.gd" id="9_mxgn1"]
+[ext_resource type="Script" path="res://Scripts/Player/States/PlayerRecovery.gd" id="10_jjiqc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4100t"]
 
 [node name="Player" type="CharacterBody2D"]
+collision_layer = 3
 script = ExtResource("1_pg7rg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -50,6 +52,9 @@ player = NodePath("../..")
 [node name="PlayerBlock" type="Node" parent="StateMachine" node_paths=PackedStringArray("player")]
 script = ExtResource("9_mxgn1")
 player = NodePath("../..")
+
+[node name="PlayerRecovery" type="Node" parent="StateMachine"]
+script = ExtResource("10_jjiqc")
 
 [node name="InputTimer" type="Timer" parent="."]
 wait_time = 0.2
